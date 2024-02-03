@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    user: "node" # Run as the node user inside the container
+    ports:
+      - "6969:6969"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=secret
+      - REFRESH_TOKEN_SECRET=refresh
+      - BASE_URL=http://localhost:6969
+      - CLIENT_URL=http://localhost:5173
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis:alpine"
+    expose:
+      - "6379"
